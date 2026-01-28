@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "defaults": {
+    "update_policy": "weekly",
+    "preserve": [
+      "metadata.json",
+      "history"
+    ],
+    "history": true,
+    "history_dir": "history",
+    "prompts_dir": "viscera",
+    "prompt_extensions": [
+      ".md"
+    ]
+  },
+  "entries": [
+    {
+      "id": "humanlayer",
+      "path": "3rd_party/humanlayer",
+      "type": "git",
+      "source": {
+        "repo": "https://github.com/humanlayer/humanlayer.git",
+        "ref": "main",
+        "subdir": ".claude",
+        "browse": "https://github.com/humanlayer/humanlayer/tree/main/.claude"
+      },
+      "metadata_file": "metadata.json",
+      "notes": "Claude configuration files from humanlayer."
+    },
+    {
+      "id": "joelhooks",
+      "path": "3rd_party/joelhooks",
+      "type": "git",
+      "source": {
+        "repo": "https://github.com/joelhooks/opencode-config.git",
+        "ref": "main",
+        "subdir": "agent",
+        "browse": "https://github.com/joelhooks/opencode-config/tree/main/agent"
+      },
+      "metadata_file": "metadata.json",
+      "notes": "OpenCode agent configuration files."
+    },
+    {
+      "id": "research--ai_prompts",
+      "path": "3rd_party/research--ai_prompts",
+      "type": "git",
+      "source": {
+        "repo": "https://github.com/luketych/research--ai_prompts.git",
+        "ref": "main",
+        "browse": "https://github.com/luketych/research--ai_prompts"
+      },
+      "metadata_file": "metadata.json",
+      "preserve": [
+        "local"
+      ],
+      "notes": "Prompting technique snippets from augment blog."
+    }
+  ]
+}
