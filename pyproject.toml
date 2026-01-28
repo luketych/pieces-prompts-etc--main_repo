@@ -1,0 +1,8 @@
+[project]
+name = "prompts-agents-collection"
+version = "0.1.0"
+description = "Prompts and agents collection"
+requires-python = ">=3.10"
+
+[tool.uv]
+dev-dependencies = []
