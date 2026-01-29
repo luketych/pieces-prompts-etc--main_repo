@@ -154,3 +154,19 @@ The template config lives in `qmd/index.yml` if you want to manage collections m
 - Filter by source/type: `uv run python scripts/qmd_query.py "commit" --source humanlayer --type command`
 - Bundle prompt blocks: `uv run python scripts/qmd_query.py "research plan" --format bundle`
 - Skip first-party docs: `uv run python scripts/qmd_query.py "workflow planning" --skip-first-party`
+
+## Prompt Revisions
+
+Use `scripts/revise_prompt.py` to create a new prompt version while snapshotting
+the previous one into `history/<timestamp>/` under the nearest source root.
+
+### Examples
+
+- Apply feedback and overwrite the prompt:
+  `uv run python scripts/revise_prompt.py --prompt 3rd_party/humanlayer/viscera/commands/commit.md --feedback "Add guardrails around secrets."`
+
+- Provide fully revised content (recommended):
+  `uv run python scripts/revise_prompt.py --prompt 3rd_party/humanlayer/viscera/commands/commit.md --feedback-file /tmp/feedback.md --content-file /tmp/commit_revised.md`
+
+- Output to a new file:
+  `uv run python scripts/revise_prompt.py --prompt 3rd_party/humanlayer/viscera/commands/commit.md --feedback "Shorten intro" --output 3rd_party/humanlayer/viscera/commands/commit_v2.md`
