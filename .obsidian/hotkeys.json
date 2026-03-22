@@ -1,0 +1,18 @@
+{
+  "neighbouring-files:next": [
+    {
+      "modifiers": [
+        "Ctrl"
+      ],
+      "key": "N"
+    }
+  ],
+  "neighbouring-files:prev": [
+    {
+      "modifiers": [
+        "Ctrl"
+      ],
+      "key": "P"
+    }
+  ]
+}

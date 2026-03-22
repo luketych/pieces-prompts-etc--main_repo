@@ -1,0 +1,36 @@
+{
+  "manifest": "/Users/luketych/_/Dev/Dev_Classic/llm_plus_(\ud83e\udd16\ud83e\udde0)/pieces_prompts_etc_(\ud83c\udf0e)/3rd_party/manifest.json",
+  "dry_run": false,
+  "keep": "oldest",
+  "started_at": "2026-01-28T00:26:10.678952+00:00",
+  "results": [
+    {
+      "id": "humanlayer",
+      "status": "ok",
+      "snapshots": 2,
+      "duplicates": 0,
+      "removed": 0,
+      "kept": 2,
+      "empty": 0
+    },
+    {
+      "id": "joelhooks",
+      "status": "ok",
+      "snapshots": 2,
+      "duplicates": 0,
+      "removed": 0,
+      "kept": 2,
+      "empty": 0
+    },
+    {
+      "id": "research--ai_prompts",
+      "status": "ok",
+      "snapshots": 2,
+      "duplicates": 0,
+      "removed": 0,
+      "kept": 2,
+      "empty": 0
+    }
+  ],
+  "finished_at": "2026-01-28T00:26:10.703751+00:00"
+}
