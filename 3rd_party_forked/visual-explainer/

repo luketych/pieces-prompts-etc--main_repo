@@ -1,0 +1,217 @@
+# Changelog
+
+## 0.6.4 — Interactive workbook support and stronger first-attempt guidance
+
+This change set extends the original `visual-explainer` skill so it can produce not only static visual explanation pages, but also **interactive HTML workbook-style pages** where the user can:
+
+- select preset answers
+- type notes directly in the page
+- clear per-question answers
+- generate a copyable aggregate summary
+- keep drafts locally in the browser
+
+The intent was **not** to hardcode one questionnaire format.
+Instead, the repo now explicitly supports a more open design space for pages that mix:
+
+- single-select questions
+- multi-select questions
+- text-only prompts
+- preset + notes prompts
+- locked assumptions vs open questions
+
+---
+
+## Why these changes were made
+
+The original skill was very strong at generating static visual explanations, diagrams, reviews, and tables, but it did not explicitly account for a common adjacent use case:
+
+> a visual page that also acts as a structured response surface.
+
+In practice, that means pages like:
+
+- decision workbooks
+- questionnaires
+- sign-off / approval pages
+- structured review sheets
+- requirement-gathering pages
+
+During live use, this gap showed up in a few concrete ways:
+
+1. the skill had no first-class concept of an **interactive workbook**
+2. it did not explicitly tell the model to choose between question models instead of forcing everything into a uniform A/B/C format
+3. it did not explicitly remind the model to harden **clipboard behavior on `file://` pages**
+4. it did not explicitly require **syntax-checking inline JavaScript** before delivery
+5. it did not provide a reusable **interactive reference template**
+
+This update addresses those gaps.
+
+---
+
+## Files added
+
+### `commands/interactive-workbook.md`
+A new command prompt for generating interactive HTML workbooks.
+
+It adds explicit instructions for:
+
+- choosing the right interaction model per prompt
+- separating aligned assumptions from open questions
+- combining presets with notes in the export summary
+- including per-question reset controls
+- including a bottom export surface
+- using `localStorage` by default
+- providing `navigator.clipboard` + `execCommand('copy')` fallback
+- validating custom JS before delivery
+
+### `templates/interactive-workbook.html`
+A new full working reference template for interactive workbook pages.
+
+It demonstrates:
+
+- sticky section navigation
+- locked assumptions section
+- single-select + notes
+- text-only prompt
+- multi-select + notes
+- live summary generation
+- local draft persistence via `localStorage`
+- local-file-safe copy fallback
+- per-question clear buttons
+- global clear button
+
+### `examples/CleanShot 2026-03-29 at 22.21.48@2x.png`
+A screenshot copied into a new `examples/` folder for reference.
+
+This is not a generalized template by itself, but it preserves an example artifact connected to the interactive-workbook evolution.
+
+---
+
+## Files modified
+
+### `SKILL.md`
+Updated the main skill guidance to treat interactive pages as a first-class output type.
+
+Changes include:
+
+- broadened the skill description to include **structured decisions** and **interactive workbooks**
+- bumped the documented version from `0.6.3` to `0.6.4`
+- added `interactive-workbook` to the available commands table
+- added **interactive workbook/questionnaire** to the content-type taxonomy
+- added a new rendering-approach row for:
+  - interactive workbook / questionnaire → HTML form controls + card layout + summary/export panel
+- added a new dedicated section:
+  - **Interactive Workbooks / Questionnaires / Decision Pages**
+- added new quality checks for:
+  - interactive behavior actually working
+  - copy/export behavior working on local files
+  - validating inline JS before delivery
+  - avoiding accidental multiline JS string bugs
+
+### `references/css-patterns.md`
+Added a new **Interactive Workbook Pages** section.
+
+This section introduces reusable patterns for:
+
+- clickable choice cards using real `<button type="button">` controls
+- per-question tools and clear buttons
+- selection-preview areas
+- notes textareas
+- summary/export panels
+- local state and copy fallback patterns
+- safer string handling for generated JS
+- validation expectations for interactive pages
+
+### `commands/generate-web-diagram.md`
+Updated the general web-diagram command so it can detect when a request is actually an **interactive review surface** rather than a static explanation page.
+
+It now tells the model to switch to the interactive workbook pattern when appropriate and to:
+
+- read the interactive template and workbook CSS reference
+- choose answer types per prompt instead of forcing A/B/C
+- include summary/export behavior
+- include local persistence when appropriate
+- validate custom JS
+
+### `.claude-plugin/plugin.json`
+Updated metadata to reflect the broader scope.
+
+Changes:
+
+- description now mentions **interactive workbooks**
+- version bumped from `0.6.3` to `0.6.4`
+
+---
+
+## Design principles added or made explicit
+
+These principles are now much more explicit in the repo:
+
+### 1. Not every prompt should use the same answer model
+The system should choose the structure that matches the content:
+
+- **single-select** when only one answer makes sense
+- **multi-select** when multiple conditions can be true
+- **text-only** when presets would be fake precision
+- **preset + notes** when the user may want a canonical answer plus nuance
+
+### 2. Interactive pages need an export surface
+If the page collects multiple answers, it should also provide a clean way to export them as plain text or markdown.
+
+### 3. Presets and notes should coexist cleanly
+If the user selects a preset and also types notes, both should appear in the aggregated answer.
+
+### 4. `file://` pages need stronger clipboard handling
+Local HTML pages cannot assume the modern clipboard API is always available.
+
+The repo now explicitly accounts for:
+
+- `navigator.clipboard.writeText(...)`
+- `document.execCommand('copy')` fallback
+- manual selection fallback
+
+### 5. Interactive pages need validation, not just styling
+A good-looking page is not enough if the JS is broken.
+
+The updated guidance now explicitly calls for:
+
+- syntax-checking generated JS
+- opening the page in the browser
+- checking for console errors
+- verifying click/toggle behavior
+- verifying reset behavior
+- verifying summary export behavior
+
+---
+
+## What did not change
+
+This update does **not** try to convert `visual-explainer` into a form-builder or force all outputs into an interactive mode.
+
+The original strengths remain intact:
+
+- architecture pages
+- Mermaid diagrams
+- tables and audits
+- diff reviews
+- plan reviews
+- project recaps
+- slide decks
+
+Interactive workbooks are added as an **additional pattern**, not a replacement.
+
+---
+
+## Net effect
+
+After these changes, `visual-explainer` is better able to reach a good first attempt for pages that are both:
+
+1. **visual explanations**, and
+2. **usable browser-side work surfaces for collecting answers**
+
+In short, the repo now better supports the class of output that looks like:
+
+- a polished explainer page
+- with structured decisions or questions
+- with live answer capture
+- with a durable export summary
+- and with stronger safeguards against broken local-file interactivity
